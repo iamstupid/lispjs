@@ -5,8 +5,6 @@
  * @namespace Array
  */
 Array.prototype.__callIm__ = true;
-Function.prototype.__defineGetter__("applier",function(){return this;});
-console.log.applier=console;
 Object.prototype.send = function(sym,arg) {
 	return this[sym].apply(this,arg);
 }
@@ -48,7 +46,7 @@ function _(A) {
 			for (var i = 1; i < l; i++) {
 				ar[i] = exec(ar[i]);
 			}
-			return ar[0].apply(ar[0].applier,ar.slice(1));
+			return ar[0].apply(console,ar.slice(1));
 		}
 	}
 	Array.prototype.__defineGetter__("_", function() {
@@ -58,4 +56,13 @@ function _(A) {
 })();
 function execs(){
 	return arguments[arguments.length-1];
+}
+function macro(list){
+	return _([$("concat"),_([execs]),_(list)]._);
+}
+function set(global,name,val){
+	return global[name]=val;
+}
+function display(){
+	console.log.apply(console,Array.prototype.slice.call(arguments));
 }

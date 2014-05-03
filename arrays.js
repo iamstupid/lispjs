@@ -20,10 +20,20 @@ Number.prototype["*"] = function(b) {
 Number.prototype["/"] = function(b) {
 	return this / b;
 }
-
-function _(A) {
-	A.__callIm__ = false;
-	return A;
+String.prototype["+"] = function(b){
+	return this + b;
+}
+Array.prototype["+"]=function(b){
+	return this.concat(b);
+}
+Array.prototype["<<"]=function(b){
+	this.push(b);
+	return this;
+}
+function _() {
+	var a=Array.prototype.slice.call(arguments);
+	a.__callIm__=false;
+	return a;
 }
 (function() {
 	function $(A) {
@@ -33,8 +43,27 @@ function _(A) {
 			return obj.send.apply(obj[0],[A, Array.prototype.slice.call(obj, 1)]);
 		}
 	}
+	String.prototype.apply = function(tArg,obj) {
+			return obj.send.apply(obj[0],[this.valueOf(), Array.prototype.slice.call(obj, 1)]);
+	}
+	function $$(A){
+		this.apply=function(tArg,args){
+			var a=eval(A);
+			return a.apply(a.applier,args);
+		}
+	}
+	function $$$(A){
+		this.type="symbol";
+		this.value=A;
+	}
 	window.$ = function(A) {
 		return new $(A);
+	}
+	window.$$ = function(A){
+		return new $$(A);
+	}
+	window.S=function(A){
+		return new S(A);
 	}
 })();
 (function() {
@@ -58,7 +87,9 @@ function execs(){
 	return arguments[arguments.length-1];
 }
 function macro(list){
-	return _([$("concat"),_([execs]),_(list)]._);
+	var a=_([$("concat"),_([execs]),_(list)]._);
+	a.type="k-macro-single";
+	return a;
 }
 function set(global,name,val){
 	return global[name]=val;

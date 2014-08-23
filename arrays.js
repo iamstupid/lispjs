@@ -1,7 +1,7 @@
 /**
  * Arrays.js
  * provide you fun of programming with Arrays. Lisp? No, it is a sub(or,sup)set of javascript
- * You'd better place `"use Arraies";' before your code so that everyone could know you're using arrays.
+ * You'd better place `"use Arrays";' before your code so that everyone could know you're using arrays.
  * @namespace Array
  */
 Array.prototype.__callIm__ = true;
